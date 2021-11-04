@@ -41,6 +41,21 @@ function Home() {
     history.push(`/update/${id}`);
   };
 
+  const onClickDelete = async ({ id }) => {
+    try {
+      setLoading(true);
+      const response = await axios(
+        `http://localhost:4000/api/movies/delete/${id}`
+      );
+      setLoading(false);
+      setMovies(response.data);
+      setError(null);
+    } catch (e) {
+      setLoading(false);
+      setError(`Server Error: ${e.message} ${e.stack}`);
+    }
+  };
+
   return (
     <>
       <SearchBar onClickRefresh={fetchMovies} setSearchText={setSearchText} />
@@ -68,9 +83,16 @@ function Home() {
                   <Button
                     onClick={() => onClickUpdate(movie)}
                     className="mx-2"
-                    variant="danger"
+                    variant="warning"
                   >
                     Edit
+                  </Button>
+                  <Button
+                    className="mx-2"
+                    onClick={() => onClickDelete(movie)}
+                    variant="danger"
+                  >
+                    delete
                   </Button>
                 </Card.Body>
               </Card>

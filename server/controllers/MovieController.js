@@ -90,9 +90,26 @@ const updateMovie = async (req, res) => {
   }
 };
 
+const deleteMovie = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletemovie = await Movie.destroy({ where: { id } });
+
+    return res.json({
+      message: "Movie deleted ",
+      movie: deletemovie,
+    });
+  } catch (e) {
+    res.status(500).json({
+      message: e.message,
+    });
+  }
+};
+
 module.exports = {
   getAllMovies,
   getMovie,
   addMovie,
   updateMovie,
+  deleteMovie,
 };
